@@ -1,7 +1,7 @@
 <template>
   <Carouselvue />
   <Productsvue  />
-  
+   
 </template>
 
 <script>

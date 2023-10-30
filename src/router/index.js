@@ -7,13 +7,13 @@ import payement from '@/views/PayementView.vue'
 const routes= [
 
     {
-        path:'/',
-        name:'boutique',
+        path:'/vuestorejs/',
+       // name:'boutik',
         component: mainvue
     },
 
     {
-        path:'/payement',
+        path:'/vuestorejs/payement',
         name:'payement',
         component: payement
     }

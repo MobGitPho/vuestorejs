@@ -3,9 +3,9 @@
     <div id="mySidebar" class="sidebar">
       <a href="javascript:void(0)" class="closebtn" @click="closeNav">&times;</a>
       <!--a href="" @click="boutique">boutique</a-->
-      <router-link to="/">boutique</router-link>
+      <RouterLink to="/vuestorejs/">boutique</RouterLink>
       <a href="#">Nos Produits</a>
-      <a href="payement.html">Panier</a>
+      <a href="">Panier</a>
       <a href="#">Contact</a>
     </div>
     <div class="topnav">
