@@ -25,7 +25,7 @@
                         </div>
                         <div class="row col-12 blackbox">
                         <div class="col-4 detail">Voir</div>
-                        <div class="col-4 add" @click="addPan(prod)"><span>BUY NOW</span></div>
+                        <div class="col-4 add" @click="bdProducts.stockPan(prod) "><span>BUY NOW</span></div>
                         <div class="col-4 price"> Price $ {{prod.price}}</div>
                     </div>
                 </div>
@@ -105,6 +105,7 @@
         <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d15865.794531968788!2d1.20253005!3d6.2043992!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2stg!4v1695826308456!5m2!1sfr!2stg" width="" height="" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
 
+      <div id="snackbar">{{ bdProducts.MsgT }}</div>
 
 
     </div>
@@ -118,15 +119,15 @@ import { ref } from 'vue';
 import { useProductsbd } from '../ProductsBD/product';
 
 export default {
-
+   
     setup(){
         const bdProducts = useProductsbd();
         const Panier = ref([]);
-        const NbArtPan = ref(0);
+      
         let monPan = ref([]);
 
         monPan.value = localStorage.getItem('article');
-        
+        //console.log("BD",bdProducts.MonPan.value)
         if (monPan.value != null){
           monPan.value = JSON.parse(localStorage.getItem('article'));
 
@@ -155,7 +156,7 @@ export default {
           //console.log("popup",popup)
           popup.classList.toggle("show");
         }
-        const addPan= function(monProd) {
+        /*const addPan= function(monProd) {
           
           let rechArt = Panier.value.find(p => p.id == monProd.id);
           if (rechArt != undefined){
@@ -170,20 +171,20 @@ export default {
           }else{
             Panier.value.push({...monProd,qtebuy:1,totbuy:monProd.price})
             NbArtPan.value = bdProducts.NbArtInPan(Panier)
-            localStorage.setItem("article",JSON.stringify(Panier.value))
+            /*localStorage.setItem("article",JSON.stringify(Panier.value))/
 
             let textB = `Vous avez  ajouter ${monProd.name} au panier`;
             let pid= `myPopup-${monProd.id}`
             popupAjout(pid,textB)
 
           }   
-        }
+        }*/
       
         return {
             bdProducts,
             Panier,
-            addPan,
-            NbArtPan,
+            //addPan,
+            //NbArtPan,
             monPan,
             myFunction,
             popupAjout
@@ -1789,51 +1790,6 @@ export default {
 }
 
 
-.popup {
- position: relative;
- display: inline-block;
- cursor: pointer;
- -webkit-user-select: none;
- -moz-user-select: none;
- -ms-user-select: none;
- user-select: none;
-}
-
-
-.popup .popuptext {
- visibility: hidden;
- width: 100px;
- background-color: #555;
- color: #fff;
- text-align: center;
- border-radius: 6px;
- padding: 8px 0;
- position: absolute;
- z-index: 1;
- bottom: 125%;
- left: 50%;
- margin-left: -90px;
-}
-
-
-.popup .popuptext::after {
- content: "";
- position: absolute;
- top: 100%;
- left: 50%;
- margin-left: -5px;
- border-width: 5px;
- border-style: solid;
- border-color: #555 transparent transparent transparent;
-}
-
-
-.popup .show {
- visibility: visible;
- -webkit-animation: fadeIn 1s;
- animation: fadeIn 1s;
-}
-
 
 @-webkit-keyframes fadeIn {
  from {opacity: 0;} 
@@ -1875,4 +1831,46 @@ export default {
   .row > .column {
     padding: 0px;
   }
+
+  #snackbar {
+  visibility: hidden; 
+  min-width: 250px; 
+  margin-left: -125px; 
+  background-color: #333; 
+  color: #fff; 
+  text-align: center; 
+  border-radius: 2px; 
+  padding: 16px; 
+  position: fixed; 
+  z-index: 1;
+  left: 50%; 
+  bottom: 30px; 
+}
+
+#snackbar.show {
+  visibility: visible; 
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+
+@-webkit-keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
 </style>

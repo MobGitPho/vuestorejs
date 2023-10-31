@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <div class="col-12 promenu">
+    <div v-if=" TotalSom > 0 "  class="col-12 promenu">
       <div class="row">
         <div class="col-12 menuo productf">
           <h1>OUR CARDS </h1>
@@ -35,7 +35,16 @@
 
       </div>
     </div>
-    <div class="testimony">
+    <div v-if=" TotalSom == 0 "  class="testimony">
+      
+      <p><span>AUCUN ARTICLE DANS VOTRE PANIER </span> </p>
+      <p> <span> {{ TotalSom }} $ </span></p>
+
+      <div class="  buttonmore">
+        
+      </div>
+    </div>
+    <div v-else class="testimony">
       
       <p><span>TOTAL </span> </p>
       <p> <span> {{ TotalSom }} $ </span></p>
@@ -68,9 +77,16 @@ export default {
     let Msg = ref('Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo, nulla!');
 
     const bdProducts = useProductsbd();
-    monPan.value = JSON.parse(localStorage.getItem('article'))
-    
-    //console.log("TabSp",TabSp.value)
+    monPan.value = (JSON.parse(localStorage.getItem('article')))
+
+   /* monPan.value.forEach((value)=>{
+        TotalSom.value += value.totbuy
+    })*/
+    TotalSom.value = bdProducts.SommeTotal ? bdProducts.SommeTotal : 0
+    const boutique = function(){
+        this.$router.push({name:'boutique'})
+
+      }
 
     const addqte = function (Prod) {
       fnd = monPan.value.find(p => p.id == Prod.id)
@@ -139,6 +155,7 @@ export default {
 
     return {
       bdProducts,
+      boutique,
       monPan,
       addqte,
       moinsqte,

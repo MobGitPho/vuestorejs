@@ -6,6 +6,7 @@ import  img4 from '@/assets/mbp.jpg';
  
 export const useProductsbd = defineStore('productsbd',
 {
+    
     state: ()=> ({
         products: [
             {
@@ -36,33 +37,63 @@ export const useProductsbd = defineStore('productsbd',
         
             }
         ],
-
-        panier: [],
-
-       nbPan : 0
-
+        panier : localStorage.getItem('article') ? JSON.parse(localStorage.getItem('article')) : [],
+        msgtxt : ''
     }),
-
+    
     actions:{
-        stockPan(Tab){
-            this.panier = Tab
-            //console.log("PanierStock",this.panier)
+        stockPan(tab){
+            let artChoix = ({...tab,qtebuy:1,totbuy:tab.price})
+            let fnd = this.panier.find(p => p.id == artChoix.id)
+            var x = document.getElementById("snackbar");
+            if(fnd != undefined){ 
+                this.msgtxt = 'Vous avez déjà ajouter ce produit dans le panier'
+                x.className = "show";
+              
+                setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+            }else{
+                this.panier.push(artChoix)
+                this.msgtxt = 'Votre Produit est enrégistré dans le panier'
+                x.className = "show";
+              
+                setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+            }
            
-        },
-
-        NbArtInPan (Tab) {
-            this.panier = Tab
-            console.log("TabLength", this.panier.length)
-            return this.panier.length
+            localStorage.setItem("article",JSON.stringify(this.panier))
             
         },
-       
-       
+
     },
 
     getters :{
         NbArt(state){
-            return state.panier.length
+            return state.panier.length ? state.panier.length : 0
+        },
+
+        MonPan: (state) =>{
+            state.panier = JSON.parse(localStorage.getItem('article'))
+            if(this.panier != undefined){
+                state.panier = this.panier
+                return state.panier
+            }else{
+                 return state.panier 
+            }
+            
+
+        },
+
+        MsgT:(state)=>{
+            return state.msgtxt
+        },
+        
+        SommeTotal:(state) =>{
+            state.panier = localStorage.getItem('article')? JSON.parse(localStorage.getItem('article')) : []
+            let TotalSom  = 0
+            state.panier.forEach((value)=>{
+                 TotalSom += value.totbuy
+            })
+
+            return TotalSom
         }
       
     }

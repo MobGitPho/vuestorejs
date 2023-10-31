@@ -21,7 +21,7 @@
         <div class="topnav-right">
           <a href=""><i class="fa fa-user"></i></a>
           <RouterLink to="payement"> <i class="fa fa-shopping-bag"><span id="count"
-            class="count">{{ NbArtPan }}</span></i> </RouterLink>
+            class="count">{{ storeProduct.NbArt }}</span></i> </RouterLink>
           <!--a href="" @click="monPanier" class="shop"><i class="fa fa-shopping-bag"><span id="count"
             class="count">{{ NbArtPan }}</span></i></a-->
           <a href=""><i class="fa fa-search"></i></a>
@@ -34,7 +34,8 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+
+
 import { useProductsbd } from '../ProductsBD/product'
 
 export default {
@@ -42,13 +43,14 @@ export default {
     props:{
       nbp:Number,
     },
+   /* beforeMount() {
+      console.log('this.NbArtPan',this.NbArtPan)
+      
+
+     },*/
     setup(){
       const storeProduct = useProductsbd()
-      const NbArtPan = ref(storeProduct.NbArt)
-     // console.log("NbArtPan",storeProduct.NbArtInPan)
-
-      //console.log('NbArtPan',NbArtPan.value)
-
+      
       const openNav= function() {
         document.getElementById("mySidebar").style.width = "250px";
         document.getElementById("main").style.marginLeft = "250px";
@@ -71,11 +73,11 @@ export default {
 
         return {
           storeProduct,
-          NbArtPan,
             openNav,
             closeNav,
             boutique,
             monPanier,
+            
    
         }
     }
