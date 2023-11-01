@@ -63,23 +63,58 @@ export const useProductsbd = defineStore('productsbd',
             
         },
 
-    },
-
-    getters :{
-        NbArt(state){
-            return state.panier.length ? state.panier.length : 0
+        addQteUnArt(tab){
+            let fnd = this.panier.find(p => p.id == tab.id)
+            fnd.qtebuy++
+            fnd.totbuy= ((fnd.qtebuy) * (fnd.price))
+            localStorage.setItem("article", JSON.stringify(this.panier))
+            let resultadd =  JSON.parse(localStorage.getItem('article'))
+            //console.log('resultadd',resultadd)
+            return resultadd
         },
 
-        MonPan: (state) =>{
-            state.panier = JSON.parse(localStorage.getItem('article'))
-            if(this.panier != undefined){
-                state.panier = this.panier
-                return state.panier
-            }else{
-                 return state.panier 
-            }
+        moinsQteUnArt(tab){
+            let fnd = this.panier.find(p => p.id == tab.id)
+            fnd.qtebuy--
+            fnd.totbuy= ((fnd.qtebuy) * (fnd.price))
+            localStorage.setItem("article", JSON.stringify(this.panier))
+            let resultadd =  JSON.parse(localStorage.getItem('article'))
             
+            return resultadd
+        },
 
+        deleteUnArt(tab){
+            let fnd = this.panier.find(p => p.id == tab.id)
+            this.panier.splice(fnd, 1);
+            localStorage.setItem("article", JSON.stringify(this.panier))
+
+            let resultadd =  JSON.parse(localStorage.getItem('article'))
+            return resultadd
+
+        },
+
+        totalSomme(pan){
+            let TotalSom  = 0
+            pan.forEach((value)=>{
+                 TotalSom += value.totbuy
+            })
+            
+            return TotalSom
+        },
+
+       
+    },
+
+    getters :{ 
+        MonPan: (state) =>{
+            state.panier = localStorage.getItem('article') ? JSON.parse(localStorage.getItem('article')) : []
+
+            return state.panier
+            
+        },
+
+        NbArt(state){
+            return state.panier.length ? state.panier.length : 0
         },
 
         MsgT:(state)=>{
@@ -89,13 +124,16 @@ export const useProductsbd = defineStore('productsbd',
         SommeTotal:(state) =>{
             state.panier = localStorage.getItem('article')? JSON.parse(localStorage.getItem('article')) : []
             let TotalSom  = 0
+            //console.log('state.panier',state.panier)
             state.panier.forEach((value)=>{
                  TotalSom += value.totbuy
             })
-
+            //console.log('state.panierTotalSom',TotalSom)
             return TotalSom
-        }
+        },
       
+
+
     }
 
 })

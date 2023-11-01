@@ -22,22 +22,22 @@
             <img class="" :src="prod.img" alt="" style="width: 100%;">
           </div>
           <div class="row col-12 blackbox">
-            <div class="col-4 detailp" @click="addqte(prod)"><span>+</span> </div>
+            <div class="col-4 detailp" @click="addQteUnArt(prod)"><span>+</span> </div>
             <div class="col-4 addp"><span id="qteadd-${result.id}">{{ prod.qtebuy }}</span></div>
-            <div class="col-4 detailm" @click="moinsqte(prod)"><span>-</span> </div>
+            <div class="col-4 detailm" @click="moinsQteUnArt(prod)"><span>-</span> </div>
           </div>
           <div class="row col-12 redbox">
-            <div class="col-12 deleteitem" @click="deleteItemduPan(prod)"> $ {{ prod.qtebuy * prod.price }} <i
+            <div class="col-12 deleteitem" @click="deleteUnArt(prod)"> $ {{ prod.qtebuy * prod.price }} <i
                 class="fa fa-trash"></i><span id="total-${result.id}"></span> </div>
           </div>
-           
+         
         </div>
 
       </div>
     </div>
     <div v-if=" TotalSom == 0 "  class="testimony">
       
-      <p><span>AUCUN ARTICLE DANS VOTRE PANIER </span> </p>
+      <p><span>VEUILLEZ  AJOUTER  OU AUGMENTER LA QUANTITE DES ARTICLE DANS VOTRE PANIER </span> </p>
       <p> <span> {{ TotalSom }} $ </span></p>
 
       <div class="  buttonmore">
@@ -69,85 +69,50 @@ export default {
   },
 
   setup() {
-    let fnd
-    let result = ref('');
+  
     let monPan = ref([]);
-    let TotalPay;
     let TotalSom= ref(0);
     let Msg = ref('Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo, nulla!');
 
     const bdProducts = useProductsbd();
-    monPan.value = (JSON.parse(localStorage.getItem('article')))
+    monPan.value = bdProducts.MonPan 
 
-   /* monPan.value.forEach((value)=>{
-        TotalSom.value += value.totbuy
-    })*/
     TotalSom.value = bdProducts.SommeTotal ? bdProducts.SommeTotal : 0
+    
     const boutique = function(){
         this.$router.push({name:'boutique'})
 
       }
 
-    const addqte = function (Prod) {
-      fnd = monPan.value.find(p => p.id == Prod.id)
-      fnd.qtebuy++
-      localStorage.setItem("article", JSON.stringify(monPan.value))
-
-      TotalSom.value = TotalPay()
-      /*fnd = monPan.value.find(p => p.id == Prod.id)
-      TotalSom.value = (( fnd.qtebuy *  fnd.price))*/
+    const addQteUnArt = function(prod){
+      monPan.value = bdProducts.addQteUnArt(prod)
+      TotalSom.value = bdProducts.totalSomme(monPan.value)
+   
     }
 
-    const moinsqte = function (Prod) {
-      fnd = monPan.value.find(p => p.id == Prod.id)
-
-      if (fnd.qtebuy <= 0) {
-        fnd = monPan.value.findIndex(p => p.id == Prod.id)
-        monPan.value.splice(fnd, 1);
-        localStorage.setItem("article", JSON.stringify(monPan.value))
-        TotalSom.value = TotalPay()
-
-      } else {
-        fnd.qtebuy--
-        localStorage.setItem("article", JSON.stringify(monPan.value))
-
-        TotalSom.value = TotalPay()
-      }
-
-    }
-
-    const deleteItemduPan = function (Prod) {
-      fnd = monPan.value.findIndex(p => p.id == Prod.id)
-      monPan.value.splice(fnd, 1);
-      localStorage.setItem("article", JSON.stringify(monPan.value))
-      TotalSom.value = TotalPay()
-    }
-
-
-    TotalPay = function(){
+    const moinsQteUnArt = function(prod){
+      monPan.value = bdProducts.moinsQteUnArt(prod)
+      TotalSom.value = bdProducts.totalSomme(monPan.value)
       
-      TotalSom.value = 0
-      monPan.value.forEach((value) => {
-       
-        TotalSom.value += (( value.qtebuy *  value.price))
-      });
-      
-      return TotalSom.value 
     }
-    
+
+    const deleteUnArt = function(prod){
+      monPan.value = bdProducts.deleteUnArt(prod)
+      TotalSom.value = bdProducts.totalSomme(monPan.value)
+    }
+
+  
     const buynow = function(){
       
       if(TotalSom.value <= 0){
-        if (monPan.value.length < 0){
-          Msg.value = 'Votre panier est vide. Veuillez choisir les articles pour éffectuer votre commande !'
-        }else{
-          Msg.value = 'Veuillez choisir une quantité '
-        }
-       
+        ''
       }else{
         Msg.value = 'Commande effectuée. Merci et à bientôt!!!'
         localStorage.removeItem("article");
         localStorage.clear();
+        
+        monPan.value = bdProducts.MonPan
+        
       }
 
 
@@ -157,12 +122,10 @@ export default {
       bdProducts,
       boutique,
       monPan,
-      addqte,
-      moinsqte,
-      deleteItemduPan,
-      fnd,
-      result,
-      TotalPay,
+      addQteUnArt,
+      moinsQteUnArt,
+      deleteUnArt,
+      
       TotalSom,
       Msg,
       buynow,

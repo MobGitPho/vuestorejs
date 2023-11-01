@@ -143,19 +143,7 @@ export default {
          ''
         }
 
-        const popupAjout= function (popid,textA) {
-          var popup = document.getElementById(popid);
-         // console.log("popup",`myPopup-${popid}`)
-          popup.textContent = textA;
-          popup.classList.toggle("show");
 
-        }
-
-        const myFunction =function (popid) {
-          var popup = document.getElementById("myPopup-"+ popid);
-          //console.log("popup",popup)
-          popup.classList.toggle("show");
-        }
         /*const addPan= function(monProd) {
           
           let rechArt = Panier.value.find(p => p.id == monProd.id);
@@ -186,8 +174,7 @@ export default {
             //addPan,
             //NbArtPan,
             monPan,
-            myFunction,
-            popupAjout
+
         }
 
     }
