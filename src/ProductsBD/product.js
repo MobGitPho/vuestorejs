@@ -69,18 +69,29 @@ export const useProductsbd = defineStore('productsbd',
             fnd.totbuy= ((fnd.qtebuy) * (fnd.price))
             localStorage.setItem("article", JSON.stringify(this.panier))
             let resultadd =  JSON.parse(localStorage.getItem('article'))
-            //console.log('resultadd',resultadd)
+            
             return resultadd
         },
 
         moinsQteUnArt(tab){
             let fnd = this.panier.find(p => p.id == tab.id)
-            fnd.qtebuy--
-            fnd.totbuy= ((fnd.qtebuy) * (fnd.price))
-            localStorage.setItem("article", JSON.stringify(this.panier))
-            let resultadd =  JSON.parse(localStorage.getItem('article'))
+            console.log(fnd.qtebuy)
+            if(fnd.qtebuy > 1){
+              fnd.qtebuy--
+                fnd.totbuy= ((fnd.qtebuy) * (fnd.price))
+                localStorage.setItem("article", JSON.stringify(this.panier))
+                let resultadd =  JSON.parse(localStorage.getItem('article'))
+                
+                return resultadd  
+            }else{
+                
+                this.panier.splice(fnd, 1);
+                localStorage.setItem("article", JSON.stringify(this.panier))
+                let resultadd =  JSON.parse(localStorage.getItem('article'))
+               
+                return resultadd  
+            }
             
-            return resultadd
         },
 
         deleteUnArt(tab){
@@ -131,9 +142,6 @@ export const useProductsbd = defineStore('productsbd',
             //console.log('state.panierTotalSom',TotalSom)
             return TotalSom
         },
-      
-
-
     }
 
 })

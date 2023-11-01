@@ -10,7 +10,7 @@
     </div>
     <div class="topnav">
         <div class="topnav-centered">
-          <a href="#"  class="active">BEAUTIFLIE</a>
+          <RouterLink to="/vuestorejs/">BEAUTIFLIE</RouterLink>
         </div>
        
         <div id="main">
@@ -126,6 +126,7 @@ export default {
         
         .topnav-centered a {
         float: none;
+        font-family: 'Open Sans', sans-serif;
         position: absolute;
         top: 50%;
         left: 50%;
